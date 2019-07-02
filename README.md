@@ -1,27 +1,119 @@
-# NgAuth
+# @appstrax/ng-auth
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.6.
+This library contains a simple service, which allows you to easily integrate authentication into your applications.
 
-## Development server
+## Getting Started
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Create a new application here: https://appstrax-auth-api-qa.herokuapp.com
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+npm install @appstrax/ng-auth --save
+```
 
-## Build
+## Setup
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+In your `app.module.ts` file:
 
-## Running unit tests
+```javascript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+// Import the NgAuthModule
+import { NgAuthModule } from '@appstrax/ng-auth';
 
-## Running end-to-end tests
+import { AppComponent } from './app.component';
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
 
-## Further help
+    // Configure it with your Application ID
+    NgAuthModule.forRoot({
+      applicationId: "<YOUR-APP-ID>"
+    })
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+In your `component`, inject the NgAuthService:
+
+```javascript
+export class Component {
+
+  constructor(
+    // Other injectables...
+
+    // Inject the NgAuthService
+    private ngAuth: NgAuthService
+
+  ) {}
+
+}
+```
+
+## Registration
+
+```javascript
+export class AppComponent {
+  public registrationRequest: RegistrationRequest = {
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: ""
+  };
+  public registrationResponse: RegistrationResponse = {
+    token: ""
+  };
+
+  constructor(private ngAuth: NgAuthService) {}
+
+  async register() {
+    try {
+      this.registrationResponse = await this.ngAuth.register(
+        this.registrationRequest
+      );
+
+      // The JWT Token
+      console.log(this.registrationResponse);
+    } catch (err) {
+      // The HTTP Error Response
+    }
+  }
+}
+```
+
+## Login
+
+```javascript
+export class AppComponent {
+  public authRequest: AuthRequest = {
+    email: "",
+    password: ""
+  };
+  public authResponse: AuthResponse = {
+    token: ""
+  };
+
+  constructor(private ngAuth: NgAuthService) {}
+
+  async login() {
+    try {
+      this.authResponse = await this.ngAuth.login(this.authRequest);
+
+      // The JWT token
+      console.log(this.authResponse);
+    } catch (err) {
+      // The HTTP Error Response
+    }
+  }
+}
+```
