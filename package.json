@@ -6,8 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "build-lib": "ng build ng-auth",
+    "copy-license": "cp ./LICENSE ./dist/ng-auth",
+    "copy-readme": "cp ./README.md ./dist/ng-auth",
+    "copy-files": "npm run copy-license && npm run copy-readme",
     "pack-lib": "cd dist/ng-auth && npm pack",
-    "package": "npm run build-lib && npm run pack-lib",
+    "package": "npm run build-lib && npm run copy-files && npm run pack-lib",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
