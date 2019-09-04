@@ -119,10 +119,3 @@ export class AppComponent {
   }
 }
 ```
-
-# Development and Publishing
-
-```
-npm run package
-npm publish ./dist/ng-auth/appstrax-ng-auth-0.0.2.tgz
-```

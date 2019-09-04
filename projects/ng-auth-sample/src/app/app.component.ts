@@ -14,8 +14,8 @@ import {
 })
 export class AppComponent {
   public registrationRequest: RegistrationRequest = {
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: ""
   };
