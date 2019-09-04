@@ -1,4 +1,4 @@
 export interface NgAuthServiceConfig {
-  applicationId: string;
+  apiKey: string;
   baseUrl?: string;
 }

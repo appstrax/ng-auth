@@ -11,7 +11,7 @@ import { NgAuthModule } from "@appstrax/ng-auth";
     BrowserModule,
     FormsModule,
     NgAuthModule.forRoot({
-      applicationId: "056d4043-ac22-7de1-ec5f-06318f0acac3"
+      apiKey: "qmBDHjmlCOYIRWfXfhyrdAC90eauYHlooWNUjC1m"
     })
   ],
   providers: [],

@@ -4,7 +4,9 @@ This library contains a simple service, which allows you to easily integrate aut
 
 ## Getting Started
 
-Create a new application here: https://appstrax-auth-api-qa.herokuapp.com
+Create your AppStrax Application (API Key) here: https://appstrax.tech.
+
+You can use this test API Key: `qmBDHjmlCOYIRWfXfhyrdAC90eauYHlooWNUjC1m` (not recommended for production).
 
 ## Installation
 
@@ -34,7 +36,7 @@ import { AppComponent } from './app.component';
 
     // Configure it with your Application ID
     NgAuthModule.forRoot({
-      applicationId: "<YOUR-APP-ID>"
+      apiKey: "<YOUR-API-KEY>"
     })
 
   ],
@@ -116,4 +118,11 @@ export class AppComponent {
     }
   }
 }
+```
+
+# Development and Publishing
+
+```
+npm run package
+npm publish ./dist/ng-auth/appstrax-ng-auth-0.0.2.tgz
 ```
