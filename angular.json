@@ -53,7 +53,7 @@
             "main": "projects/ng-auth-sample/src/main.ts",
             "polyfills": "projects/ng-auth-sample/src/polyfills.ts",
             "tsConfig": "projects/ng-auth-sample/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/ng-auth-sample/src/favicon.ico",
               "projects/ng-auth-sample/src/assets"

@@ -1,22 +1,20 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
-import { NgAuthKeys } from "../keys";
-import { NgAuthServiceConfig } from "../dto/ng-auth-service-config.dto";
+import { NG_AUTH_SERVICE_CONFIG_TOKEN } from "../tokens";
+import { NgAuthServiceConfig } from "../ng-auth-service-config";
 import { RegistrationRequest } from "../dto/registration-request.dto";
 import { RegistrationResponse } from "../dto/registration-response.dto";
 import { AuthRequest } from "../dto/auth-request.dto";
 import { AuthResponse } from "../dto/auth-response.dto";
 
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 export class NgAuthService {
   // Default, otherwise overwritten from config
-  private baseUrl: string = "https://api.appstrax.tech/auth";
+  private baseUrl: string = "https://auth.api.appstrax.tech/v1";
 
   constructor(
-    @Inject(NgAuthKeys.NgAuthServiceConfig) private config: NgAuthServiceConfig,
+    @Inject(NG_AUTH_SERVICE_CONFIG_TOKEN) private config: NgAuthServiceConfig,
     private httpClient: HttpClient
   ) {
     if (this.config.baseUrl) {
