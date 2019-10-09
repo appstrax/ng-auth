@@ -28,7 +28,8 @@ export class AppComponent {
     password: ""
   };
   public authResponse: AuthResponse = {
-    token: ""
+    token: "",
+    refreshToken: ""
   };
 
   constructor(private ngAuth: NgAuthService) {}

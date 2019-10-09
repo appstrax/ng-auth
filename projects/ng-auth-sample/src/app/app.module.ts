@@ -1,9 +1,9 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
+import { NgAuthModule } from "@appstrax/ng-auth";
 
 import { AppComponent } from "./app.component";
-import { NgAuthModule } from "@appstrax/ng-auth";
 
 @NgModule({
   declarations: [AppComponent],
@@ -11,7 +11,8 @@ import { NgAuthModule } from "@appstrax/ng-auth";
     BrowserModule,
     FormsModule,
     NgAuthModule.forRoot({
-      apiKey: "qmBDHjmlCOYIRWfXfhyrdAC90eauYHlooWNUjC1m"
+      apiKey: "xdeWnV8XeYPVbki4Kcm2pBVjKUwHoYNZkuzL0ju8",
+      baseUrl: "http://auth.api.appstrax.tech/v1"
     })
   ],
   providers: [],

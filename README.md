@@ -6,7 +6,7 @@ This library contains a simple service, which allows you to easily integrate aut
 
 Create your AppStrax Application (API Key) here: https://appstrax.tech.
 
-You can use this test API Key: `qmBDHjmlCOYIRWfXfhyrdAC90eauYHlooWNUjC1m` (not recommended for production).
+You can use this test API Key: `xdeWnV8XeYPVbki4Kcm2pBVjKUwHoYNZkuzL0ju8` (not recommended for production).
 
 ## Installation
 
@@ -36,7 +36,7 @@ import { AppComponent } from './app.component';
 
     // Configure it with your Application ID
     NgAuthModule.forRoot({
-      apiKey: "<YOUR-API-KEY>"
+      apiKey: "YOUR-API-KEY"
     })
 
   ],
@@ -73,7 +73,8 @@ export class AppComponent {
     password: ""
   };
   public registrationResponse: RegistrationResponse = {
-    token: ""
+    token: "",
+    refreshToken
   };
 
   constructor(private ngAuth: NgAuthService) {}
@@ -120,9 +121,13 @@ export class AppComponent {
 }
 ```
 
-# Development and Publishing
+# Development and Testing
+
+You can run tests in the package by running `ng test` in the `./projects/ng-auth` folder.
+
+# Publishing
 
 ```
 npm run package
-npm publish ./dist/ng-auth/appstrax-ng-auth-0.0.3.tgz
+npm publish ./dist/ng-auth/appstrax-ng-auth-1.0.0.tgz
 ```
