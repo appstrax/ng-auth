@@ -11,7 +11,7 @@ import { AuthResponse } from "../dto/auth-response.dto";
 @Injectable()
 export class NgAuthService {
   // Default, otherwise overwritten from config
-  private baseUrl: string = "https://auth.api.appstrax.tech/v1";
+  private baseUrl: string = "https://api.appstrax.tech/auth/v1";
 
   constructor(
     @Inject(NG_AUTH_SERVICE_CONFIG_TOKEN) private config: NgAuthServiceConfig,

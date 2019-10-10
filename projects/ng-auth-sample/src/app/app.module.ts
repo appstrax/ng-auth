@@ -11,8 +11,7 @@ import { AppComponent } from "./app.component";
     BrowserModule,
     FormsModule,
     NgAuthModule.forRoot({
-      apiKey: "xdeWnV8XeYPVbki4Kcm2pBVjKUwHoYNZkuzL0ju8",
-      baseUrl: "http://auth.api.appstrax.tech/v1"
+      apiKey: "xdeWnV8XeYPVbki4Kcm2pBVjKUwHoYNZkuzL0ju8"
     })
   ],
   providers: [],

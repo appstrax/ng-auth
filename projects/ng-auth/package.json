@@ -1,6 +1,6 @@
 {
   "name": "@appstrax/ng-auth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a library used to integrate @appstrax/auth into your application",
   "keywords" :["AppStrax", "AppStrax Authentication", "AppStrax Auth", "Authentication", "Auth"],
   "license" : "SEE LICENSE IN LICENSE",
