@@ -1,8 +1,8 @@
-import { Injectable, Inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { StorageService } from './storage.service';
+import { Injectable } from "@angular/core";
+import { JwtHelperService } from "@auth0/angular-jwt";
 
-import { NG_AUTH_SERVICE_CONFIG_TOKEN } from "../tokens";
-import { NgAuthServiceConfig } from "../ng-auth-service-config";
+import { HttpService } from './http.service';
 import { RegistrationRequest } from "../dto/registration-request.dto";
 import { RegistrationResponse } from "../dto/registration-response.dto";
 import { AuthRequest } from "../dto/auth-request.dto";
@@ -10,51 +10,58 @@ import { AuthResponse } from "../dto/auth-response.dto";
 
 @Injectable()
 export class NgAuthService {
-  // Default, otherwise overwritten from config
-  private baseUrl: string = "https://api.appstrax.tech/auth/v1";
+
+  private user;
+  private token;
+  private jwtHelper = new JwtHelperService();
 
   constructor(
-    @Inject(NG_AUTH_SERVICE_CONFIG_TOKEN) private config: NgAuthServiceConfig,
-    private httpClient: HttpClient
+    private httpService: HttpService,
+    private storageService: StorageService,
   ) {
-    if (this.config.baseUrl) {
-      this.baseUrl = this.config.baseUrl;
+    const token = this.storageService.getAuthToken();
+    if (token) {
+      this.initFromToken(token);
     }
   }
 
-  public async register(
-    registrationRequest: RegistrationRequest
-  ): Promise<RegistrationResponse> {
-    return new Promise((resolve, reject) => {
-      this.httpClient
-        .post(this.baseUrl + "/registration", registrationRequest, {
-          headers: {
-            "X-Api-Key": this.config.apiKey
-          }
-        })
-        .subscribe(
-          (response: RegistrationResponse) => {
-            resolve(response);
-          },
-          err => reject(err)
-        );
-    });
+  private initFromToken(token: string) {
+    if (!this.jwtHelper.isTokenExpired(token)) {
+      this.token = token;
+      this.user = this.jwtHelper.decodeToken(token);
+      this.storageService.setAuthToken(token);
+    } else {
+      this.logout();
+    }
+  }
+
+  public async register(registrationRequest: RegistrationRequest): Promise<RegistrationResponse> {
+    const result: RegistrationResponse = await this.httpService.post("/registration", registrationRequest);
+    this.initFromToken(result.token);
+    return result;
   }
 
   public async login(authRequest: AuthRequest): Promise<AuthResponse> {
-    return new Promise((resolve, reject) => {
-      this.httpClient
-        .post(this.baseUrl + "/auth", authRequest, {
-          headers: {
-            "X-Api-Key": this.config.apiKey
-          }
-        })
-        .subscribe(
-          (response: AuthResponse) => {
-            resolve(response);
-          },
-          err => reject(err)
-        );
-    });
+    const response: AuthResponse = await this.httpService.post("/auth", authRequest);
+    this.initFromToken(response.token);
+    return response;
+  }
+
+  public logout() {
+    this.token = null;
+    this.user = null;
+    this.storageService.clearAuthToken();
+  }
+
+  public isAuthenticated() {
+    return (this.token && !this.jwtHelper.isTokenExpired(this.token)) ? true : false;
+  }
+
+  public getAuthenticatedUser() {
+    return this.user;
+  }
+
+  public getAuthToken() {
+    return this.token;
   }
 }

@@ -1,38 +1,39 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import {
   NgAuthService,
   AuthResponse,
   AuthRequest,
   RegistrationResponse,
   RegistrationRequest
-} from "@appstrax/ng-auth";
+} from '@appstrax/ng-auth';
+import { JsonPipe } from '@angular/common';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   public registrationRequest: RegistrationRequest = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: ""
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: ''
   };
   public registrationResponse: RegistrationResponse = {
-    token: ""
+    token: ''
   };
 
   public authRequest: AuthRequest = {
-    email: "",
-    password: ""
+    email: '',
+    password: ''
   };
   public authResponse: AuthResponse = {
-    token: "",
-    refreshToken: ""
+    token: '',
+    refreshToken: ''
   };
 
-  constructor(private ngAuth: NgAuthService) {}
+  constructor(private ngAuth: NgAuthService) { }
 
   async login() {
     try {
@@ -52,5 +53,21 @@ export class AppComponent {
       // The HTTP Error Response
       // TODO: Alert
     }
+  }
+
+  isAuthenticated() {
+    return this.ngAuth.isAuthenticated();
+  }
+
+  getAuthToken() {
+    return this.ngAuth.getAuthToken();
+  }
+
+  getUser() {
+    return JSON.stringify(this.ngAuth.getAuthenticatedUser());
+  }
+
+  logout() {
+    return this.ngAuth.logout();
   }
 }

@@ -1,39 +1,23 @@
-<div style="text-align:center">
+<div style="text-align:center" *ngIf="!isAuthenticated()" >
   <h1>
     Welcome to @appstrax/ng-auth Sample
   </h1>
   <h2>Register:</h2>
-  <input
-    type="text"
-    placeholder="firstname"
-    [(ngModel)]="registrationRequest.firstName"
-  />
-  <input
-    type="text"
-    placeholder="lastname"
-    [(ngModel)]="registrationRequest.lastName"
-  />
-  <input
-    type="email"
-    placeholder="email"
-    [(ngModel)]="registrationRequest.email"
-  />
-  <input
-    type="password"
-    placeholder="password"
-    [(ngModel)]="registrationRequest.password"
-  />
+  <input type="text" placeholder="firstname" [(ngModel)]="registrationRequest.firstName" />
+  <input type="text" placeholder="lastname" [(ngModel)]="registrationRequest.lastName" />
+  <input type="email" placeholder="email" [(ngModel)]="registrationRequest.email" />
+  <input type="password" placeholder="password" [(ngModel)]="registrationRequest.password" />
   <button type="submit" (click)="register()">Register</button>
-  <div *ngIf="registrationResponse.token">
-    Registration Token: {{ registrationResponse.token }}
-  </div>
+
   <h2>Login:</h2>
   <input type="email" placeholder="email" [(ngModel)]="authRequest.email" />
-  <input
-    type="password"
-    placeholder="password"
-    [(ngModel)]="authRequest.password"
-  />
+  <input type="password" placeholder="password" [(ngModel)]="authRequest.password" />
   <button type="submit" (click)="login()">Login</button>
-  <div *ngIf="authResponse.token">Auth Token: {{ authResponse.token }}</div>
+
+</div>
+
+<div style="text-align:center" *ngIf="isAuthenticated()" >
+  <div>Auth Token: {{ getAuthToken() }}</div>
+  <div>User: {{ getUser() }}</div>
+  <button type="submit" (click)="logout()">Logout</button>
 </div>
