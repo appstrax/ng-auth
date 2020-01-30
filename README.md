@@ -124,10 +124,3 @@ export class AppComponent {
 # Development and Testing
 
 You can run tests in the package by running `ng test` in the `./projects/ng-auth` folder.
-
-# Publishing
-
-```
-npm run package
-npm publish ./dist/ng-auth/appstrax-ng-auth-1.0.2.tgz
-```
