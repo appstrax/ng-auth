@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export class StorageService {
 
   private authTokenKey = 'APPSTRAX_AUTH_TOKEN';
+  private refreshToken = 'APPSTRAX_REFRESH_AUTH_TOKEN';
 
   constructor() {}
 
@@ -16,6 +17,18 @@ export class StorageService {
   }
 
   public clearAuthToken() {
+    localStorage.removeItem(this.authTokenKey);
+  }
+
+  public getAuthRefreshToken(): string {
+    return localStorage.getItem(this.refreshToken);
+  }
+
+  public setAuthRefreshToken(token: string) {
+    localStorage.setItem(this.authTokenKey, token);
+  }
+
+  public clearAuthRefreshToken() {
     localStorage.removeItem(this.authTokenKey);
   }
 }
