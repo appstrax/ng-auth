@@ -129,5 +129,5 @@ You can run tests in the package by running `ng test` in the `./projects/ng-auth
 
 ```
 npm run package
-npm publish ./dist/ng-auth/appstrax-ng-auth-1.0.3.tgz
+npm publish ./dist/ng-auth/appstrax-ng-auth-1.0.4.tgz
 ```

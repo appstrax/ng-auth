@@ -1,25 +1,23 @@
-import { StorageService } from './storage.service';
-import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { StorageService } from "./storage.service";
+import { Injectable } from "@angular/core";
 
-import { HttpService } from './http.service';
-import { RegistrationRequest } from '../dto/registration-request.dto';
-import { RegistrationResponse } from '../dto/registration-response.dto';
-import { AuthRequest } from '../dto/auth-request.dto';
-import { AuthResponse } from '../dto/auth-response.dto';
-import { ForgotPasswordRequest } from '../dto/forgot-password-request.dto';
-import { ForgotPasswordResponse } from '../dto/forgot-password-response.dto';
-import { NgUser } from '../dto/ng-user.dto';
-import { ResetPasswordRequest } from '../dto/reset-password-request.dto';
-import { ResetPasswordResponse } from '../dto/reset-password-response.dto';
-import { KeyValue } from '../dto/key-value.dto';
+import { HttpService } from "./http.service";
+import { RegistrationRequest } from "../dto/registration-request.dto";
+import { RegistrationResponse } from "../dto/registration-response.dto";
+import { AuthRequest } from "../dto/auth-request.dto";
+import { AuthResponse } from "../dto/auth-response.dto";
+import { ForgotPasswordRequest } from "../dto/forgot-password-request.dto";
+import { ForgotPasswordResponse } from "../dto/forgot-password-response.dto";
+import { NgUser } from "../dto/ng-user.dto";
+import { ResetPasswordRequest } from "../dto/reset-password-request.dto";
+import { ResetPasswordResponse } from "../dto/reset-password-response.dto";
+import { KeyValue } from "../dto/key-value.dto";
 
 @Injectable()
 export class NgAuthService {
   private user: NgUser;
   private token;
   private refreshTokenString;
-  private jwtHelper = new JwtHelperService();
   private checkTokenInterval;
 
   constructor(
@@ -34,10 +32,10 @@ export class NgAuthService {
   }
 
   private initFromToken(token: string, refreshToken: string) {
-    if (!this.jwtHelper.isTokenExpired(token)) {
+    if (!this.isTokenExpired(token)) {
       this.token = token;
       this.refreshTokenString = refreshToken;
-      this.user = this.jwtHelper.decodeToken(token);
+      this.user = this.decode(token);
       this.storageService.setAuthToken(token);
       this.storageService.setAuthRefreshToken(refreshToken);
       if (!this.checkTokenInterval) {
@@ -49,7 +47,7 @@ export class NgAuthService {
   }
 
   private checkToken() {
-    const secondsTimeNow = Math.trunc((new Date().getTime() / 1000));
+    const secondsTimeNow = Math.trunc(new Date().getTime() / 1000);
     this.user.exp = this.user.exp + 10;
     if (this.user && this.user.exp < secondsTimeNow) {
       this.logout();
@@ -65,7 +63,7 @@ export class NgAuthService {
     registrationRequest: RegistrationRequest
   ): Promise<RegistrationResponse> {
     const result: RegistrationResponse = await this.httpService.post(
-      '/registration',
+      "/registration",
       registrationRequest
     );
     this.initFromToken(result.token, result.refreshToken);
@@ -74,7 +72,7 @@ export class NgAuthService {
 
   public async login(authRequest: AuthRequest): Promise<NgUser> {
     const response: AuthResponse = await this.httpService.post(
-      '/auth',
+      "/auth",
       authRequest
     );
     this.initFromToken(response.token, response.refreshToken);
@@ -83,13 +81,13 @@ export class NgAuthService {
 
   private async refreshToken(token: string): Promise<void> {
     const header: KeyValue = {
-      key: 'Authorization',
+      key: "Authorization",
       value: token
     };
 
     try {
       const response: AuthResponse = await this.httpService.get(
-        '/auth/refresh-token',
+        "/auth/refresh-token",
         [header]
       );
       this.initFromToken(response.token, response.refreshToken);
@@ -102,7 +100,7 @@ export class NgAuthService {
     forgotPasswordRequest: ForgotPasswordRequest
   ): Promise<ForgotPasswordResponse> {
     const response: ForgotPasswordResponse = await this.httpService.post(
-      '/auth-forgot-password-request-reset-token',
+      "/auth-forgot-password-request-reset-token",
       forgotPasswordRequest
     );
     return response;
@@ -112,7 +110,7 @@ export class NgAuthService {
     resetPasswordRequest: ResetPasswordRequest
   ): Promise<ResetPasswordResponse> {
     const response: ResetPasswordResponse = await this.httpService.patch(
-      '/auth-reset-password',
+      "/auth-reset-password",
       resetPasswordRequest
     );
     return response;
@@ -127,7 +125,7 @@ export class NgAuthService {
   }
 
   public isAuthenticated() {
-    return this.token && !this.jwtHelper.isTokenExpired(this.token)
+    return this.token && !this.isTokenExpired(this.token)
       ? true
       : false;
   }
@@ -138,5 +136,60 @@ export class NgAuthService {
 
   public getAuthToken() {
     return this.token;
+  }
+
+  private decode(token) {
+    var parts = token.split(".");
+    if (parts.length !== 3) {
+      throw new Error("Invalid JWT Token, expecting 3 parts");
+    }
+    var decoded = this.urlBase64Decode(parts[1]);
+    if (!decoded) {
+      throw new Error("Cannot decode the token");
+    }
+    return JSON.parse(decoded);
+  }
+
+  private urlBase64Decode(str) {
+    var output = str.replace(/-/g, "+").replace(/_/g, "/");
+    switch (output.length % 4) {
+      case 0: {
+        break;
+      }
+      case 2: {
+        output += "==";
+        break;
+      }
+      case 3: {
+        output += "=";
+        break;
+      }
+      default: {
+        throw "Illegal base64url string!";
+      }
+    }
+    return (window as any).decodeURIComponent(escape((window as any).atob(output))); // TODO: Inject window from angular?
+  }
+
+  private getTokenExpirationDate(token) {
+    var decoded = this.decode(token);
+
+    if (typeof decoded.exp === "undefined") {
+      return null;
+    }
+
+    var d = new Date(0); // 0 as param sets the date to the epoch
+    d.setUTCSeconds(decoded.exp);
+
+    return d;
+  }
+
+  private isTokenExpired(token, offsetSeconds = 0) {
+    var d = this.getTokenExpirationDate(token);
+    if (!d) {
+      return false;
+    }
+
+    return !(d.valueOf() > new Date().valueOf() + offsetSeconds * 1000);
   }
 }

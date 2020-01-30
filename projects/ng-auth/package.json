@@ -1,6 +1,6 @@
 {
   "name": "@appstrax/ng-auth",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "This is a library used to integrate @appstrax/auth into your application",
   "keywords" :["AppStrax", "AppStrax Authentication", "AppStrax Auth", "Authentication", "Auth"],
   "license" : "SEE LICENSE IN LICENSE",
@@ -11,7 +11,6 @@
   "homepage" :"https://appstrax.tech",
   "peerDependencies": {
     "@angular/common": "8.2.14",
-    "@angular/core": "8.2.14",
-    "@auth0/angular-jwt": "3.0.1"
+    "@angular/core": "8.2.14"
   }
 }
