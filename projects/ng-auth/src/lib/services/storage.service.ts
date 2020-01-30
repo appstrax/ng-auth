@@ -25,10 +25,10 @@ export class StorageService {
   }
 
   public setAuthRefreshToken(token: string) {
-    localStorage.setItem(this.authTokenKey, token);
+    localStorage.setItem(this.refreshToken, token);
   }
 
   public clearAuthRefreshToken() {
-    localStorage.removeItem(this.authTokenKey);
+    localStorage.removeItem(this.refreshToken);
   }
 }
