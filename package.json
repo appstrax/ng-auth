@@ -1,6 +1,6 @@
 {
   "name": "ng-auth",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -25,7 +25,7 @@
     "@angular/platform-browser": "8.2.14",
     "@angular/platform-browser-dynamic": "8.2.14",
     "@angular/router": "8.2.14",
-    "@appstrax/ng-auth": "1.0.4",
+    "@appstrax/ng-auth": "1.0.5",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
     "zone.js": "0.10.2"
