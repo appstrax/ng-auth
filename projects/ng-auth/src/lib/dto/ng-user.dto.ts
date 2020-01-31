@@ -1,7 +1,7 @@
 export interface NgUser {
   id: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   iat: number;
   exp: number;

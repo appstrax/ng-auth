@@ -45,12 +45,9 @@ export class HttpService {
   public get(url: string, headers?: Array<KeyValue>): Promise<any> {
     const submitHeaders = JSON.parse(JSON.stringify(this.headers));
     if (headers) {
-      console.log('headers', headers);
       headers.forEach(header => {
-        console.log('header', header);
         submitHeaders.headers[header.key] = header.value;
       });
-      console.log('submit', submitHeaders);
     }
 
     return new Promise((resolve, reject) => {

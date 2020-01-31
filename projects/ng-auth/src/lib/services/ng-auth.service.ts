@@ -1,17 +1,17 @@
-import { StorageService } from "./storage.service";
-import { Injectable } from "@angular/core";
+import { StorageService } from './storage.service';
+import { Injectable } from '@angular/core';
 
-import { HttpService } from "./http.service";
-import { RegistrationRequest } from "../dto/registration-request.dto";
-import { RegistrationResponse } from "../dto/registration-response.dto";
-import { AuthRequest } from "../dto/auth-request.dto";
-import { AuthResponse } from "../dto/auth-response.dto";
-import { ForgotPasswordRequest } from "../dto/forgot-password-request.dto";
-import { ForgotPasswordResponse } from "../dto/forgot-password-response.dto";
-import { NgUser } from "../dto/ng-user.dto";
-import { ResetPasswordRequest } from "../dto/reset-password-request.dto";
-import { ResetPasswordResponse } from "../dto/reset-password-response.dto";
-import { KeyValue } from "../dto/key-value.dto";
+import { HttpService } from './http.service';
+import { RegistrationRequest } from '../dto/registration-request.dto';
+import { RegistrationResponse } from '../dto/registration-response.dto';
+import { AuthRequest } from '../dto/auth-request.dto';
+import { AuthResponse } from '../dto/auth-response.dto';
+import { ForgotPasswordRequest } from '../dto/forgot-password-request.dto';
+import { ForgotPasswordResponse } from '../dto/forgot-password-response.dto';
+import { NgUser } from '../dto/ng-user.dto';
+import { ResetPasswordRequest } from '../dto/reset-password-request.dto';
+import { ResetPasswordResponse } from '../dto/reset-password-response.dto';
+import { KeyValue } from '../dto/key-value.dto';
 
 @Injectable()
 export class NgAuthService {
@@ -59,20 +59,18 @@ export class NgAuthService {
     }
   }
 
-  public async register(
-    registrationRequest: RegistrationRequest
-  ): Promise<RegistrationResponse> {
+  public async register(registrationRequest: RegistrationRequest): Promise<NgUser> {
     const result: RegistrationResponse = await this.httpService.post(
-      "/registration",
+      '/registration',
       registrationRequest
     );
     this.initFromToken(result.token, result.refreshToken);
-    return result;
+    return this.user;
   }
 
   public async login(authRequest: AuthRequest): Promise<NgUser> {
     const response: AuthResponse = await this.httpService.post(
-      "/auth",
+      '/auth',
       authRequest
     );
     this.initFromToken(response.token, response.refreshToken);
@@ -81,13 +79,13 @@ export class NgAuthService {
 
   private async refreshToken(token: string): Promise<void> {
     const header: KeyValue = {
-      key: "Authorization",
+      key: 'Authorization',
       value: token
     };
 
     try {
       const response: AuthResponse = await this.httpService.get(
-        "/auth/refresh-token",
+        '/auth/refresh-token',
         [header]
       );
       this.initFromToken(response.token, response.refreshToken);
@@ -100,7 +98,7 @@ export class NgAuthService {
     forgotPasswordRequest: ForgotPasswordRequest
   ): Promise<ForgotPasswordResponse> {
     const response: ForgotPasswordResponse = await this.httpService.post(
-      "/auth-forgot-password-request-reset-token",
+      '/auth-forgot-password-request-reset-token',
       forgotPasswordRequest
     );
     return response;
@@ -110,7 +108,7 @@ export class NgAuthService {
     resetPasswordRequest: ResetPasswordRequest
   ): Promise<ResetPasswordResponse> {
     const response: ResetPasswordResponse = await this.httpService.patch(
-      "/auth-reset-password",
+      '/auth-reset-password',
       resetPasswordRequest
     );
     return response;
@@ -139,33 +137,33 @@ export class NgAuthService {
   }
 
   private decode(token) {
-    var parts = token.split(".");
+    var parts = token.split('.');
     if (parts.length !== 3) {
-      throw new Error("Invalid JWT Token, expecting 3 parts");
+      throw new Error('Invalid JWT Token, expecting 3 parts');
     }
     var decoded = this.urlBase64Decode(parts[1]);
     if (!decoded) {
-      throw new Error("Cannot decode the token");
+      throw new Error('Cannot decode the token');
     }
     return JSON.parse(decoded);
   }
 
   private urlBase64Decode(str) {
-    var output = str.replace(/-/g, "+").replace(/_/g, "/");
+    var output = str.replace(/-/g, '+').replace(/_/g, '/');
     switch (output.length % 4) {
       case 0: {
         break;
       }
       case 2: {
-        output += "==";
+        output += '==';
         break;
       }
       case 3: {
-        output += "=";
+        output += '=';
         break;
       }
       default: {
-        throw "Illegal base64url string!";
+        throw 'Illegal base64url string!';
       }
     }
     return (window as any).decodeURIComponent(escape((window as any).atob(output))); // TODO: Inject window from angular?
@@ -174,7 +172,7 @@ export class NgAuthService {
   private getTokenExpirationDate(token) {
     var decoded = this.decode(token);
 
-    if (typeof decoded.exp === "undefined") {
+    if (typeof decoded.exp === 'undefined') {
       return null;
     }
 
