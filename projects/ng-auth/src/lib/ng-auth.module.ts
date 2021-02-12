@@ -11,7 +11,7 @@ import { StorageService } from './services/storage.service';
   imports: [HttpClientModule]
 })
 export class NgAuthModule {
-  static forRoot(config: NgAuthServiceConfig): ModuleWithProviders {
+  static forRoot(config: NgAuthServiceConfig): ModuleWithProviders<NgAuthModule> {
     return {
       ngModule: NgAuthModule,
       providers: [

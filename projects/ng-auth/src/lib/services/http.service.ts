@@ -8,7 +8,7 @@ import { KeyValue } from '../dto/key-value.dto';
 @Injectable()
 export class HttpService {
   // default, otherwise overwritten from config
-  private baseUrl = 'https://api.appstrax.tech/auth/v1';
+  private baseUrl = 'https://api.codecapsules.io/auth/v1';
   private headers;
 
   constructor(
